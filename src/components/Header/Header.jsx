@@ -1,9 +1,8 @@
-import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
-import NotificationBadge from "react-notification-badge";
-import { Effect } from "react-notification-badge";
+// import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Avatar,
+  Badge,
   Button,
   Menu,
   MenuButton,
@@ -12,12 +11,14 @@ import {
   MenuList,
   useDisclosure,
 } from "@chakra-ui/react";
+
 import ProfileModel from "../Modals/ProfileModel";
 import { useNavigate } from "react-router-dom";
 import SearchSidebar from "./SearchSidebar";
 import { ChatState } from "../../context/ChatProvider";
 import { getSender } from "../../utils/ChatLogic";
 import { USER_INFO_KEY } from "../../constants";
+import { BellIcon } from '@chakra-ui/icons';
 const Header = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,11 +63,7 @@ const Header = () => {
             <div className="notification ">
               <Menu>
                 <MenuButton className="font-Work bg-transparent cursor-pointer ">
-                  <NotificationBadge
-                    count={notification?.length}
-                    effect={Effect.SCALE}
-                  />
-                  <NotificationsRoundedIcon />
+                  <BellIcon className="text-[24px]" />
                 </MenuButton>
                 <MenuList>
                   {!notification?.length && (
