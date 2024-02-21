@@ -6,7 +6,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import Messages from "../Message/Messages";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../context/ChatProvider";
 import { ArrowBackIcon, ViewIcon } from "@chakra-ui/icons";
 import { useConfig, useMedia } from "../../hook/hook";
 import { getSender, getSenderFull } from "../../utils/ChatLogic";
@@ -19,11 +19,12 @@ import { io } from "socket.io-client";
 import { memo } from "react";
 import { useMemo } from "react";
 import { useCallback } from "react";
+import { USER_INFO_KEY } from "../../constants";
 
 var selectedChatCompre;
 const SingleChat = () => {
   const socket = useMemo(() => io.connect(import.meta.env.VITE_API_URL), []);
-  const { token } = JSON.parse(localStorage.getItem("user_Info"));
+  const { token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));
   const {
     user,
     selectedChat,

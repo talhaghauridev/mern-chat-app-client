@@ -15,7 +15,7 @@ import {
 import ProfileModel from "../Modals/ProfileModel";
 import { useNavigate } from "react-router-dom";
 import SearchSidebar from "./SearchSidebar";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../context/ChatProvider";
 import { getSender } from "../../utils/ChatLogic";
 import { USER_INFO_KEY } from "../../constants";
 const Header = () => {

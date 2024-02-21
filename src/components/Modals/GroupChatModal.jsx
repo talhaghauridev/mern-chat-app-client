@@ -17,7 +17,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import UserListIItem from "../Chats/UserListIItem";
 import UserBageItem from "../Chats/UserBageItem";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../context/ChatProvider";
 import { useLocation } from "react-router-dom";
 import { memo } from "react";
 import { USER_INFO_KEY } from "../../constants";

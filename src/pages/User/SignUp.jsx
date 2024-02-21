@@ -8,6 +8,7 @@ import { signUpSchema } from "../../validation/validation";
 import { Button, Heading, Input, MetaData } from "../../components/ui";
 import { useMessage } from "../../hook/hook";
 import inputError from "../../utils/inputError";
+import { toast } from "react-toastify";
 const initialValues = {
   name: "",
   email: "",
@@ -21,7 +22,7 @@ const SignUp = () => {
     message: null,
     error: null,
   });
-  const { error, message,loading } = userData;
+  const { error, message, loading } = userData;
   const [avatar, setAvatar] = useState("");
 
   //Error Hnadling
@@ -56,12 +57,13 @@ const SignUp = () => {
 
       const { data } = await axios.post("/user/register", formData);
 
-      setUserData({
+      setUserData((pve) => ({
         loading: false,
         isAuthenicated: true,
         user: data?.user,
         message: data?.message,
-      });
+        ...pve,
+      }));
 
       localStorage.setItem(
         USER_INFO_KEY,
@@ -72,12 +74,17 @@ const SignUp = () => {
         })
       );
     } catch (error) {
-      setUserData((pev) => ({ error: error?.response?.data?.message, ...pev }));
+      setUserData((pev) => ({
+        error: error?.response?.data?.message || error?.message,
+        ...pev,
+      }));
+      console.log(error);
     }
   };
 
   useMessage(error, message, "/chat");
 
+  console.log(error);
   return (
     <>
       <MetaData title={"Sign Up -- Chat App"} />

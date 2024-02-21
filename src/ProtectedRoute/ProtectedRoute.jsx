@@ -5,6 +5,8 @@ import { USER_INFO_KEY } from "../constants";
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem(USER_INFO_KEY));
 
+  console.log(user);
+
   if (!user) {
     return <Navigate to={"/login"}/>;
   }

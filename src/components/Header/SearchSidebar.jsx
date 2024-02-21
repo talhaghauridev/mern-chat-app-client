@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import ChatLoading from "../Chats/ChatLoading";
 import UserListIItem from "../Chats/UserListIItem";
 import { SearchIcon } from "@chakra-ui/icons";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../context/ChatProvider";
 import { USER_INFO_KEY } from "../../constants";
 const SearchSidebar = () => {
   const { selectedChat, setSelectedChat, chats, setChats } = ChatState();

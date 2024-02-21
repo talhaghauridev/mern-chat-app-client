@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {useContext, useEffect, useState,createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { USER_INFO_KEY } from "../constants";
 
-const ChatContext = createContext();
+const Chatcontext = createContext()
 
 const ChatProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const ChatProvider = ({ children }) => {
   }, []);
 
   return (
-    <ChatContext.Provider
+    <Chatcontext.Provider
       value={{
         user,
         setUser,
@@ -36,12 +36,12 @@ const ChatProvider = ({ children }) => {
       }}
     >
       {children}
-    </ChatContext.Provider>
+    </Chatcontext.Provider>
   );
 };
 
 export const ChatState = () => {
-  return useContext(ChatContext);
+  return useContext(Chatcontext);
 };
 
 export default ChatProvider;

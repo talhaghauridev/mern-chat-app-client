@@ -2,7 +2,7 @@ import { useConfig, useMedia } from "../../hook/hook";
 import axios from "../../api/baseUrl";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../context/ChatProvider";
 import { Box, Text } from "@chakra-ui/react";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../../utils/ChatLogic";

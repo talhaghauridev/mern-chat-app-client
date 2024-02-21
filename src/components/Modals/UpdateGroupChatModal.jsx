@@ -18,7 +18,7 @@ import { ViewIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
 import UserListIItem from "../Chats/UserListIItem";
 import UserBageItem from "../Chats/UserBageItem";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../context/ChatProvider";
 import { USER_INFO_KEY } from "../../constants";
 
 const UpdateGroupChatModal = ({ handleFetchMessages }) => {

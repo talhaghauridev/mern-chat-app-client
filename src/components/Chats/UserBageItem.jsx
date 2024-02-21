@@ -1,6 +1,6 @@
 import { Box, CloseButton } from "@chakra-ui/react";
 import { memo,useMemo } from "react";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../context/ChatProvider";
 import { USER_INFO_KEY } from "../../constants";
 
 const UserBageItem = ({ user, handleFunction }) => {
