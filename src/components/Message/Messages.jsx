@@ -1,7 +1,6 @@
 import {
   isLastMessage,
   isSameSender,
-  isSameSenderMargin,
   isSameUser,
 } from "../../utils/ChatLogic";
 import { ChatState } from "../../context/ChatProvider";

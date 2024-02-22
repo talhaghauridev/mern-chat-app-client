@@ -44,15 +44,3 @@ export const isSameSenderMargin = (messages, m, i, userId) => {
 export const isSameUser = (messages, m, i) => {
   return i > 0 && messages[i - 1]?.sender?._id === m?.sender?._id;
 };
-// {"description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-// "main": "postcss.config.js",
-// "repository": {
-//   "type": "git",
-//   "url": "git+https://github.com/talhaghouridev/Mern-Chat-App-Client.git"
-// },
-// "author": "",
-// "license": "ISC",
-// "bugs": {
-//   "url": "https://github.com/talhaghouridev/Mern-Chat-App-Client/issues"
-// },
-// "homepage": "https://github.com/talhaghouridev/Mern-Chat-App-Client#readme"}
