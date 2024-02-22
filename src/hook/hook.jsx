@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const useToggle = (intialState = false) => {
@@ -121,4 +121,27 @@ export const useMediaQuery = (query) => {
   }, [query, matches]);
 
   return matches;
+};
+
+export const useScroll = () => {
+  const [bottom, setBottom] = useState(true);
+  const ref = useRef();
+  const {} = useLocation();
+
+  const handleGoBottom = () => {
+    setBottom(true);
+  };
+
+  useEffect(() => {
+    if (bottom && ref?.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, [ref, bottom]);
+
+  return {
+    handleGoBottom,
+    setBottom,
+    bottom,
+    ref,
+  };
 };

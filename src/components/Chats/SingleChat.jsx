@@ -8,7 +8,7 @@ import {
 import Messages from "../Message/Messages";
 import { ChatState } from "../../context/ChatProvider";
 import { ArrowBackIcon, ViewIcon } from "@chakra-ui/icons";
-import { useConfig, useMedia } from "../../hook/hook";
+import { useConfig, useMedia, useScroll } from "../../hook/hook";
 import { getSender, getSenderFull } from "../../utils/ChatLogic";
 import ProfileModel from "../Modals/ProfileModel";
 import UpdateGroupChatModal from "../Modals/UpdateGroupChatModal";
@@ -45,7 +45,7 @@ const SingleChat = () => {
   const [isTyping, setIsTyping] = useState(false);
 
   //Handle Fetch Messages
-  const handleFetchMessages =  async () => {
+  const handleFetchMessages = async () => {
     if (!selectedChat) return;
 
     try {
@@ -59,7 +59,7 @@ const SingleChat = () => {
       toast.error(error?.response?.data?.message);
       setLoading(false);
     }
-  }
+  };
   //Handle Send Message
   const handleSendMessage = async () => {
     try {
@@ -127,13 +127,11 @@ const SingleChat = () => {
       } else {
         setMessages([...messages, newMessageRecived]);
         setFetchAgain(!fetchAgain);
-        
       }
     });
-  }, [messages, notification, newMessage,selectedChat]);
+  }, [messages, notification, newMessage, selectedChat]);
   console.log(messages);
   console.log(fetchAgain);
-
   return (
     <>
       {selectedChat ? (
