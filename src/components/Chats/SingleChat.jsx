@@ -266,7 +266,7 @@ const SingleChat = () => {
 
           <div className="bottom_search sticky w-[100%] px-[6px]">
             <FormControl
-              className="relative rounded-[6px]"
+              className="relative rounded-[6px] border-[1px]  border-solid  border-[#0000001c]"
               onKeyDown={(e) =>
                 newMessage?.trim() && e.key === "Enter" && handleSendMessage(e)
               }
