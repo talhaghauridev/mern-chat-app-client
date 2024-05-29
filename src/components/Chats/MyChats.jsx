@@ -17,8 +17,14 @@ const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
   const config = useConfig(token);
 
-  const { selectedChat, setSelectedChat, chats, setChats, fetchAgain } =
-    ChatState();
+  const {
+    selectedChat,
+    setSelectedChat,
+    chats,
+    setChats,
+    fetchAgain,
+    latestMessages,
+  } = ChatState();
 
   //Handle Fetch Chats
   const handleFetchChats = async () => {
@@ -42,7 +48,7 @@ const MyChats = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem(USER_INFO_KEY)));
     handleFetchChats();
-  }, [fetchAgain]);
+  }, []);
 
   const shortString = (str) => {
     return str?.length > 12 ? `${str.slice(0, 12)}...` : str;
@@ -72,31 +78,40 @@ const MyChats = () => {
             {!loading ? (
               chats ? (
                 <div className="flex flex-col gap-[10px]">
-                  {chats?.map((chat) => (
-                    <Box
-                      onClick={() => handleSelectedChats(chat)}
-                      className="cursor-pointer rounded-lg px-[15px] py-[10px]"
-                      bg={selectChat(chat) ? "#38B2AC" : "#E8E8E8"}
-                      color={selectChat(chat) ? "white" : "black"}
-                      key={chat?._id}
-                    >
-                      <div className="font-Work sm:text-[18.5px] text-[16px]">
-                        {!chat?.isGroupChat
-                          ? getSender(loggedUser, chat?.users)
-                          : chat?.chatName}
-                      </div>
-                      {chat?.latestMessage && (
-                        <div className="flex items-center justify-start gap-2">
-                          <h1 className="text-[14px] font-Work font-[600]">
-                            {shortString(chat?.latestMessage?.sender?.name)}
-                          </h1>
-                          <p className="text-[12px] line-clamp-1">
-                            {chat?.latestMessage.content}
-                          </p>
+                  {chats?.map((chat) => {
+                    return (
+                      <Box
+                        onClick={() => handleSelectedChats(chat)}
+                        className="cursor-pointer rounded-lg px-[15px] py-[10px]"
+                        bg={selectChat(chat) ? "#38B2AC" : "#E8E8E8"}
+                        color={selectChat(chat) ? "white" : "black"}
+                        key={chat?._id}
+                      >
+                        <div className="font-Work sm:text-[18.5px] text-[16px]">
+                          {!chat?.isGroupChat
+                            ? getSender(loggedUser, chat?.users)
+                            : chat?.chatName}
                         </div>
-                      )}
-                    </Box>
-                  ))}
+
+                        {latestMessages && latestMessages?.length > 0
+                          ? latestMessages.map(
+                              (latest) =>
+                                latest?.chat?._id === chat?._id && (
+                                  <LatestMessageBox
+                                    name={latest?.sender?.name}
+                                    message={latest?.content}
+                                  />
+                                )
+                            )
+                          : chat?.latestMessage && (
+                              <LatestMessageBox
+                                name={chat?.latestMessage?.sender?.name}
+                                message={chat?.latestMessage.content}
+                              />
+                            )}
+                      </Box>
+                    );
+                  })}
                 </div>
               ) : (
                 <ChatLoading />
@@ -112,3 +127,15 @@ const MyChats = () => {
 };
 
 export default memo(MyChats);
+
+const LatestMessageBox = memo(({ name, message }) => {
+  const shortString = (str) => {
+    return str?.length > 12 ? `${str.slice(0, 12)}...` : str;
+  };
+  return (
+    <div className="flex items-center justify-start gap-2">
+      <h1 className="text-[14px] font-Work font-[600]">{shortString(name)}</h1>
+      <p className="text-[12px] line-clamp-1">{message}</p>
+    </div>
+  );
+});

@@ -49,6 +49,8 @@ const SingleChat = () => {
     setNotification,
     fetchAgain,
     setFetchAgain,
+    latestMessages,
+    setLatestMessages,
   } = ChatState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,7 +65,7 @@ const SingleChat = () => {
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(true);
   const messagesRef = useRef(null);
   const chatContainerRef = useRef(null);
-
+  console.log(latestMessages);
   // Handle Fetch Messages
   const handleFetchMessages = async () => {
     if (!selectedChat) return;
@@ -140,6 +142,14 @@ const SingleChat = () => {
     setIsScrolledToBottom(scrollHeight - scrollTop === clientHeight);
   }, []);
 
+  const updateLatestMessages = (newMessage) => {
+    setLatestMessages((prevMessages) => {
+      const filteredMessages = prevMessages.filter(
+        (msg) => msg.sender._id !== newMessage.sender._id
+      );
+      return [newMessage, ...filteredMessages];
+    });
+  };
   // Setup socket connection and event listeners
   useEffect(() => {
     socket.emit("setup", user?.user);
@@ -171,6 +181,7 @@ const SingleChat = () => {
           setFetchAgain(!fetchAgain);
         }
       } else {
+        updateLatestMessages(newMessageReceived);
         setMessages([...messages, newMessageReceived]);
         setFetchAgain(!fetchAgain);
       }

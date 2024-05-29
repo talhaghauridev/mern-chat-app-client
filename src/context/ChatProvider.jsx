@@ -11,6 +11,7 @@ const ChatProvider = ({ children }) => {
   const [chats, setChats] = useState([]);
   const [fetchAgain, setFetchAgain] = useState(false);
   const [notification, setNotification] = useState([]);
+  const [latestMessages, setLatestMessages] = useState([]);
   useEffect(() => {
     const user_Info = JSON.parse(localStorage.getItem(USER_INFO_KEY));
 
@@ -33,6 +34,7 @@ const ChatProvider = ({ children }) => {
         setFetchAgain,
         notification,
         setNotification,
+        latestMessages, setLatestMessages
       }}
     >
       {children}

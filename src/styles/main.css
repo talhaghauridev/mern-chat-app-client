@@ -35,12 +35,9 @@ body {
 }
 
 .chats_grid::-webkit-scrollbar {
-  width: 10px;
-  /* background-color: #00000014; */
-  /* display: none; */
+  display: none;
 }
 .chats_grid::-webkit-scrollbar-thumb {
-  /* /* background-color: #0000003d; */
-  border-radius: 15px;
-  /* display: none; */
+  background-color: #c1c1c1;
+  border-radius: 2px;
 }

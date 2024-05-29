@@ -41,7 +41,6 @@ const Header = () => {
 
   return (
     <>
-  
       <header id="header" className="w-[100%]  bg-white ">
         <div className="container py-[10px] px-[15px] w-[100%] h-[100%] max-w-[100%] grid grid-cols-2 md:grid-cols-3 items-center justify-between ">
           {/* Search Box  */}
@@ -60,42 +59,45 @@ const Header = () => {
 
           <div className="flex gap-[6px] items-center justify-end ">
             <div className="notification ">
-              <Menu>
-                <MenuButton className="font-Work bg-transparent cursor-pointer ">
-                  <BellIcon className="text-[24px]" />
-                </MenuButton>
-                <MenuList>
-                  {!notification?.length && (
-                    <>
-                      <MenuItem>No New Messages</MenuItem>
-                    </>
-                  )}
+              <div className="relative inline-flex">
+                <Menu>
+                  <MenuButton className="font-Work bg-transparent cursor-pointer ">
+                    <BellIcon className="text-[24px]" />
+                  </MenuButton>
+                  <MenuList>
+                    {!notification?.length && (
+                      <>
+                        <MenuItem>No New Messages</MenuItem>
+                      </>
+                    )}
 
-                  {notification &&
-                    notification?.map((noti) => (
-                      <MenuItem
-                        key={noti._id}
-                        className="relative inline-flex"
-                        onClick={() => {
-                          setSelectedChat(noti.chat);
-                          setNotification(
-                            notification.filter((i) => i !== noti)
-                          );
-                        }}
-                      >
-                        {noti.chat.isGroupChat
-                          ? `New Message in ${noti.chat.chatName}`
-                          : `New Message from ${getSender(
-                              user,
-                              noti.chat.users
-                            )}`}
-                        <span className="absolute rounded-full py-1 px-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4 bg-red-500 text-white min-w-[24px] min-h-[24px]">
-                          {notification.length}
-                        </span>
-                      </MenuItem>
-                    ))}
-                </MenuList>
-              </Menu>
+                    {notification &&
+                      notification?.map((noti) => (
+                        <MenuItem
+                          key={noti._id}
+                          onClick={() => {
+                            setSelectedChat(noti.chat);
+                            setNotification(
+                              notification.filter((i) => i !== noti)
+                            );
+                          }}
+                        >
+                          {noti.chat.isGroupChat
+                            ? `New Message in ${noti.chat.chatName}`
+                            : `New Message from ${getSender(
+                                user,
+                                noti.chat.users
+                              )}`}
+                        </MenuItem>
+                      ))}
+                  </MenuList>
+                  {notification?.length > 0 && (
+                    <span className="absolute rounded-full py-1 px-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4 bg-red-500 text-white min-w-[20px] min-h-[20px]">
+                      {notification?.length}
+                    </span>
+                  )}
+                </Menu>
+              </div>
             </div>
 
             <div className="user">
