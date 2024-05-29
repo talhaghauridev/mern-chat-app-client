@@ -14,7 +14,7 @@ const Chat = () => {
         <Header />
 
         <div
-          className="h-[89vh] px-[10px] py-[10px] gap-[10px]"
+          className="h-full px-[10px] py-[10px] gap-[10px]"
           style={{
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr" : "1.3fr 3fr ",

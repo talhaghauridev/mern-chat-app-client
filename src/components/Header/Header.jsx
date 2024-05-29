@@ -18,7 +18,7 @@ import SearchSidebar from "./SearchSidebar";
 import { ChatState } from "../../context/ChatProvider";
 import { getSender } from "../../utils/ChatLogic";
 import { USER_INFO_KEY } from "../../constants";
-import { BellIcon } from '@chakra-ui/icons';
+import { BellIcon } from "@chakra-ui/icons";
 const Header = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,14 +32,23 @@ const Header = () => {
     localStorage.removeItem(USER_INFO_KEY);
     navigate("/login");
   };
+  console.log("Notification:", notification);
+  notification &&
+    notification.map((noti) => {
+      console.log("Notification Users:", noti.chat.users);
+      console.log("Sender:", getSender(user, noti.chat.users));
+    });
 
-  const handleToggle = () => {
-    // document.body.classList.toggle("dark");
-    document["body"]["classList"]["toggle"]("dark");
-  };
-  console.log(notification);
   return (
     <>
+      {/* <div className="relative inline-flex">
+        <button
+          className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          type="button"
+        >
+          Notifications
+        </button>
+      </div> */}
       <header id="header" className="w-[100%]  bg-white ">
         <div className="container py-[10px] px-[15px] w-[100%] h-[100%] max-w-[100%] grid grid-cols-2 md:grid-cols-3 items-center justify-between ">
           {/* Search Box  */}
@@ -49,10 +58,7 @@ const Header = () => {
           {/* Heading  */}
 
           <div className=" md:relative md:block absolute hidden ">
-            <h1
-              className="text-[28px] text-[#452B32] text-center"
-              onClick={handleToggle}
-            >
+            <h1 className="text-[28px] text-[#452B32] text-center">
               Talk-A-Trive
             </h1>
           </div>
@@ -74,24 +80,26 @@ const Header = () => {
 
                   {notification &&
                     notification?.map((noti) => (
-                      <>
-                        <MenuItem
-                          key={noti?._id}
-                          onClick={() => {
-                            setSelectedChat(noti?.chat);
-                            setNotification(
-                              notification?.filter((i) => i !== noti)
-                            );
-                          }}
-                        >
-                          {noti?.chat?.isGroupChat
-                            ? `New Message in ${noti.chat.chatName}`
-                            : `New Message from ${getSender(
-                                user,
-                                noti?.chats?.users
-                              )}`}
-                        </MenuItem>
-                      </>
+                      <MenuItem
+                        key={noti._id}
+                        className="relative inline-flex"
+                        onClick={() => {
+                          setSelectedChat(noti.chat);
+                          setNotification(
+                            notification.filter((i) => i !== noti)
+                          );
+                        }}
+                      >
+                        {noti.chat.isGroupChat
+                          ? `New Message in ${noti.chat.chatName}`
+                          : `New Message from ${getSender(
+                              user,
+                              noti.chat.users
+                            )}`}
+                        <span className="absolute rounded-full py-1 px-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4 bg-red-500 text-white min-w-[24px] min-h-[24px]">
+                          {notification.length}
+                        </span>
+                      </MenuItem>
                     ))}
                 </MenuList>
               </Menu>

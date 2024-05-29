@@ -41,20 +41,22 @@ export const useNetwork = () => {
   return isOnline;
 };
 
-export const useMessage = (error, message, url) => {
+export const useMessage = (error, message, redirectPath) => {
   const navigate = useNavigate();
+
   useEffect(() => {
     if (error) {
       toast.error(error);
+      console.log(error);
     }
     if (message) {
       toast.success(message);
-
-      url && navigate(url);
+      if (redirectPath) {
+        navigate(redirectPath);
+      }
     }
-  }, [error, toast, message]);
+  }, [error, message, navigate, redirectPath]);
 };
-
 export const useMode = (intialState) => {
   const [mode, setMode] = useState(intialState);
   const handleOpen = () => {

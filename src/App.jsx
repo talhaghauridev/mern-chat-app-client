@@ -1,12 +1,12 @@
 import "react-toastify/dist/ReactToastify.css";
 import React, { Suspense } from "react";
-import Routes from "./routes";
+import Routes from "./Routes";
 
 const Loading = () => {
   return (
     <section
       id="loading"
-      className="h-[100vh] w-[100%] bg-white flex items-center justify-center"
+      className="font-Work text-[16px] md:text-[18px] h-[100vh] w-[100%] bg-white flex items-center justify-center"
     >
       Loading....
     </section>

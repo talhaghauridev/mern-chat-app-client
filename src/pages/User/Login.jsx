@@ -1,74 +1,73 @@
+// src/pages/Login.js
 import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "../../api/baseUrl";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useReducer } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../../validation/validation";
-import { useMessage, useNetwork } from "../../hook/hook";
+import { useMessage } from "../../hook/hook";
 import { Button, Heading, Input, MetaData } from "../../components/ui";
 import inputError from "../../utils/inputError";
 import { USER_INFO_KEY } from "../../constants";
+import { initialLoginState, loginReducer } from "../../utils/reducers";
+import { toast } from "react-toastify";
+
 const initialValues = {
   email: "",
   password: "",
 };
+
 const Login = () => {
-  const [userData, setUserData] = useState({
-    loading: false,
-    isAuthenicated: false,
-    user: {},
-    message: null,
-    error: null,
-  });
-  const { error, message, loading } = userData;
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: loginSchema,
-    onSubmit: (values) => {
-      if (values) {
-        loginUser(values);
-        console.log(values);
-      }
-    },
-  });
+  const [state, dispatch] = useReducer(loginReducer, initialLoginState);
+  const navigate = useNavigate();
+  const { error, message, loading } = state;
 
-  const { handleSubmit, getFieldProps } = formik;
-
-  //Handle Login User
+  // Handle Login User
   const loginUser = async (values) => {
-    console.log(values);
     try {
-      setUserData((pev) => ({ loading: true, ...pev }));
+      dispatch({ type: "LOGIN_REQUEST" });
       const { data } = await axios.post("/user/login", values);
 
-      setUserData({
-        loading: false,
-        isAuthenicated: true,
-        user: data?.user,
-        message: data?.message,
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: { user: data.user, message: data.message },
       });
 
       localStorage.setItem(
         USER_INFO_KEY,
         JSON.stringify({
-          isAuthenicated: true,
-          user: data?.user,
+          isAuthenticated: true,
+          user: data.user,
           token: data.token,
         })
       );
+
+      navigate("/chat");
     } catch (error) {
-      setUserData((pev) => ({ error: error?.response?.data?.message, ...pev }));
+      toast.error(error?.response?.data?.message || error.message);
+      dispatch({
+        type: "LOGIN_FAILURE",
+        payload: error?.response?.data?.message || error.message,
+      });
     }
   };
 
-  useMessage(error, message, "/chat");
+  const formik = useFormik({
+    initialValues,
+    validationSchema: loginSchema,
+    onSubmit: loginUser,
+  });
+
+  const { handleSubmit, getFieldProps } = formik;
+  useMessage(null, message, "/chat");
+
   return (
     <>
       <MetaData title={"Login -- Chat App"} />
       <section
         id="login"
-        className="relative overflow-hidden w-[100%] h-[100%]  flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]"
+        className="relative overflow-hidden w-[100%]  flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]"
       >
         <div className="container max-w-[450px] m-auto bg-[white] rounded-[5px]">
           <Heading label={"Login"} className="pt-[20px]" />
@@ -78,7 +77,6 @@ const Login = () => {
             onSubmit={handleSubmit}
           >
             {/* Email Input */}
-
             <Input
               label="Email Address"
               leftIcon={AlternateEmailOutlinedIcon}
@@ -101,15 +99,15 @@ const Login = () => {
             />
 
             <Button
-              label={loading ? "Submitting..." : " Submit"}
-              className="bg-[#3b5998]  px-[10px] py-[12px] text-[18px] mt-[10px]"
+              label={loading ? "Submitting..." : "Submit"}
+              className="bg-[#3b5998] px-[10px] py-[12px] text-[18px] mt-[10px]"
               type="submit"
               disabled={loading}
             />
 
-            <button className=" bg-[#f3f5f9] px-[10px] py-[12px] font-Work flex gap-[2px]  mt-[16px]  items-center justify-center">
-              {"Don't have account? "}
-              <Link to={"/signUp"} className="underline">
+            <button className="bg-[#f3f5f9] px-[10px] py-[12px] font-Work flex gap-[2px] mt-[16px] items-center justify-center">
+              {"Don't have an account? "}
+              <Link to="/signUp" className="underline">
                 Sign Up
               </Link>
             </button>

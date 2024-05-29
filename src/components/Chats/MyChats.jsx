@@ -1,9 +1,9 @@
 import { useConfig, useMedia } from "../../hook/hook";
 import axios from "../../api/baseUrl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { ChatState } from "../../context/ChatProvider";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../../utils/ChatLogic";
 import GroupChatModal from "../Modals/GroupChatModal";
@@ -44,10 +44,17 @@ const MyChats = () => {
     handleFetchChats();
   }, [fetchAgain]);
 
+  const shortString = (str) => {
+    return str?.length > 12 ? `${str.slice(0, 12)}...` : str;
+  };
+
+  const selectChat = (chat) => {
+    return selectedChat && selectedChat._id === chat._id;
+  };
   return (
     <div
       id="aside"
-      className="bg-white max-w-[100%] h-[100%] rounded-[6px] "
+      className="bg-white max-w-[100%]  rounded-[6px] h-[86.5vh] "
       style={{ display: isMobile && selectedChat ? "none" : "block" }}
     >
       <div className="container py-[15px] px-[15px] flex flex-col gap-[10px] h-[100%] w-[100%] max-w-[100%]">
@@ -63,29 +70,35 @@ const MyChats = () => {
           <div className="flex flex-col py-[15px] px-[10px] rounded-lg w-[100%] h-[100%]">
             {!loading ? (
               chats ? (
-                <>
-                  <div className="flex flex-col gap-[10px]">
-                    {chats?.map((chat) => (
-                        <Box
-                          onClick={() => handleSelectedChats(chat)}
-                          className="cursor-pointer rounded-lg px-[15px] py-[10px]"
-                          bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
-                          color={selectedChat === chat ? "white" : "black"}
-                          key={chat?._id}
-                        >
-                          <Text>
-                            {!chat?.isGroupChat
-                              ? getSender(loggedUser, chat?.users)
-                              : chat?.chatName}
-                          </Text>
-                        </Box>
-                    ))}
-                  </div>
-                </>
+                <div className="flex flex-col gap-[10px]">
+                  {chats?.map((chat) => (
+                    <Box
+                      onClick={() => handleSelectedChats(chat)}
+                      className="cursor-pointer rounded-lg px-[15px] py-[10px]"
+                      bg={selectChat(chat) ? "#38B2AC" : "#E8E8E8"}
+                      color={selectChat(chat) ? "white" : "black"}
+                      key={chat?._id}
+                    >
+                      <div className="font-Work sm:text-[18.5px] text-[16px]">
+                        {!chat?.isGroupChat
+                          ? getSender(loggedUser, chat?.users)
+                          : chat?.chatName}
+                      </div>
+                      {chat?.latestMessage && (
+                        <div className="flex items-center justify-start gap-2">
+                          <h1 className="text-[14px] font-Work font-[600]">
+                            {shortString(chat?.latestMessage?.sender?.name)}
+                          </h1>
+                          <p className="text-[12px] line-clamp-1">
+                            {chat?.latestMessage.content}
+                          </p>
+                        </div>
+                      )}
+                    </Box>
+                  ))}
+                </div>
               ) : (
-                <>
-                  <ChatLoading />
-                </>
+                <ChatLoading />
               )
             ) : (
               <ChatLoading />

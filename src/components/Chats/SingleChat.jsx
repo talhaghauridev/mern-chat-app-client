@@ -7,24 +7,32 @@ import {
 } from "@chakra-ui/react";
 import Messages from "../Message/Messages";
 import { ChatState } from "../../context/ChatProvider";
-import { ArrowBackIcon, ViewIcon } from "@chakra-ui/icons";
-import { useConfig, useMedia, useScroll } from "../../hook/hook";
+import { ArrowBackIcon, ViewIcon, ArrowDownIcon } from "@chakra-ui/icons";
+import { useConfig, useMedia } from "../../hook/hook";
 import { getSender, getSenderFull } from "../../utils/ChatLogic";
 import ProfileModel from "../Modals/ProfileModel";
 import UpdateGroupChatModal from "../Modals/UpdateGroupChatModal";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "../../api/baseUrl";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import { memo } from "react";
 import { useMemo } from "react";
-import { useCallback } from "react";
 import { USER_INFO_KEY } from "../../constants";
+import cn from "../../utils/cn";
 
-var selectedChatCompre;
+var selectedChatCompare;
+
 const SingleChat = () => {
-  const socket = useMemo(() => io.connect(import.meta.env.VITE_API_URL), []);
   const { token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));
+  const socket = useMemo(
+    () =>
+      io(import.meta.env.VITE_API_URL, {
+        auth: { token },
+      }),
+    [token]
+  );
+
   const {
     user,
     selectedChat,
@@ -34,6 +42,7 @@ const SingleChat = () => {
     fetchAgain,
     setFetchAgain,
   } = ChatState();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useMedia("(max-width: 768px)");
   const config = useConfig(token);
@@ -43,8 +52,11 @@ const SingleChat = () => {
   const [socketConnection, setSocketConnection] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(true);
+  const messagesRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
-  //Handle Fetch Messages
+  // Handle Fetch Messages
   const handleFetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -55,12 +67,14 @@ const SingleChat = () => {
       setMessages(data);
       setLoading(false);
       socket.emit("join_chat", selectedChat?._id);
+      handleScrollBottom();
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setLoading(false);
     }
   };
-  //Handle Send Message
+
+  // Handle Send Message
   const handleSendMessage = async () => {
     try {
       setNewMessage("");
@@ -71,11 +85,15 @@ const SingleChat = () => {
       );
 
       setMessages([...messages, data]);
+      if (data) {
+        handleScrollBottom();
+      }
       socket.emit("new_message", data);
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
   };
+  console.log(messagesRef?.current);
 
   // Handle Typing
   const handleTyping = (e) => {
@@ -99,44 +117,79 @@ const SingleChat = () => {
     }, timerLength);
   };
 
+  // Handle Scroll Bottom
+  const handleScrollBottom = useCallback(() => {
+    if (messagesRef?.current) {
+      messagesRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [messagesRef]);
+
+  const handleScroll = useCallback(() => {
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    setIsScrolledToBottom(scrollHeight - scrollTop === clientHeight);
+  }, []);
+
+  // Setup socket connection and event listeners
   useEffect(() => {
     socket.emit("setup", user?.user);
     socket.on("connection", () => setSocketConnection(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop_typing", () => setIsTyping(false));
-  }, []);
+  }, [socket, user]);
 
+  // Fetch messages when selectedChat changes
   useEffect(() => {
     handleFetchMessages();
-    selectedChatCompre = selectedChat;
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
+  // Scroll to bottom when messages change
   useEffect(() => {
-    socket.on("message_recieved", (newMessageRecived) => {
-      console.log("Hello", newMessageRecived);
+    handleScrollBottom();
+  }, [messages, handleScrollBottom]);
 
+  // Handle incoming messages
+  useEffect(() => {
+    socket.on("message_recieved", (newMessageReceived) => {
       if (
-        !selectedChatCompre ||
-        selectedChatCompre?._id !== newMessageRecived?.chat?._id
+        !selectedChatCompare ||
+        selectedChatCompare?._id !== newMessageReceived?.chat?._id
       ) {
-        if (!notification?.includes(newMessageRecived)) {
-          setNotification([newMessageRecived, ...notification]);
+        if (!notification?.includes(newMessageReceived)) {
+          setNotification([newMessageReceived, ...notification]);
           setFetchAgain(!fetchAgain);
         }
-        console.log("Hello");
       } else {
-        setMessages([...messages, newMessageRecived]);
+        setMessages([...messages, newMessageReceived]);
         setFetchAgain(!fetchAgain);
       }
+      handleScrollBottom();
     });
-  }, [messages, notification, newMessage, selectedChat]);
-  console.log(messages);
-  console.log(fetchAgain);
+  }, [
+    socket,
+    messages,
+    notification,
+    fetchAgain,
+    selectedChatCompare,
+    handleScrollBottom,
+  ]);
+
+  // Add scroll event listener
+  useEffect(() => {
+    const chatContainer = chatContainerRef?.current;
+    chatContainer?.addEventListener("scroll", handleScroll);
+    return () => {
+      chatContainer?.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
   return (
     <>
       {selectedChat ? (
         <>
-          <div className="top flex items-center justify-between h-[100%] max-h-[40px]">
+          <div className=" flex items-center justify-between h-[86.5vh] max-h-[40px]">
             <IconButton
               icon={<ArrowBackIcon />}
               display={isMobile ? "flex" : "none"}
@@ -174,25 +227,44 @@ const SingleChat = () => {
             </>
           </div>
 
-          <div className="chats_grid bg-[#E8E8E8] h-[75vh] overflow-auto rounded-[6px]  border-solid border-[1px] border-[#ededed] relative will-change-scroll  ">
-            <div className="h-[100%] flex flex-col items-center ">
-              {loading ? (
-                <>
-                  <div className="messageLoading h-[100%] w-[100%] flex items-center justify-center ">
+          <div
+            ref={chatContainerRef}
+            className="chats_grid bg-[#E8E8E8] h-[75vh] overflow-auto rounded-[6px]  border-solid border-[1px] border-[#ededed] relative"
+          >
+            <div ref={messagesRef}>
+              <div className="h-[100%] flex flex-col items-center">
+                {loading ? (
+                  <div className="messageLoading h-[100%] w-[100%] flex items-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Spinner w={20} h={20} size={"xl"} margin={"auto"} />
                   </div>
-                </>
-              ) : (
-                <>
+                ) : (
                   <div className="flex flex-col items-center justify-between w-[100%] h-[100%]">
                     <Messages messages={messages} />
                   </div>
-                </>
-              )}
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="bottom_search sticky bottom-[30px] w-[100%] px-[6px]">
+          <div className="absolute w-full  items-center justify-center flex bottom-[85px]">
+            <div
+              className={cn(
+                "sticky flex items-center justify-center transition-all",
+                !isScrolledToBottom && !loading
+                  ? "bottom-[85px] opacity-1  "
+                  : "bottom-0 opacity-0 "
+              )}
+            >
+              <button
+                className=" text-[26px] rounded-full backdrop-grayscale bg-white p-[6px] flex items-start justify-center"
+                onClick={handleScrollBottom}
+              >
+                <ArrowDownIcon />
+              </button>
+            </div>
+          </div>
+
+          <div className="bottom_search sticky w-[100%] px-[6px]">
             <FormControl
               className="relative rounded-[6px]"
               onKeyDown={(e) =>
@@ -217,13 +289,11 @@ const SingleChat = () => {
           </div>
         </>
       ) : (
-        <>
-          <div className="h-[100%] w-[100%] flex items-center justify-center dark:bg-black dark:text-white">
-            <h1 className="text-[30px] font-Work">
-              Click on a user on start chating
-            </h1>
-          </div>
-        </>
+        <div className="h-[100%] w-[100%] flex items-center justify-center dark:bg-black dark:text-white">
+          <h1 className="text-[30px] font-Work">
+            Click on a user to start chatting
+          </h1>
+        </div>
       )}
     </>
   );

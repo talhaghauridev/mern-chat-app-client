@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 const Chat = lazy(() => import("./pages/Chat/Chat"));
 const Login = lazy(() => import("./pages/User/Login"));
@@ -11,7 +11,7 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<ProtectedRoute />}>
         <Route path="/chat" element={<Chat />} />
-        <Route path="/" element={<Chat />} />
+        <Route path="/" element={<Navigate to={"/chat"} />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/signUp" element={<SignUp />} />
