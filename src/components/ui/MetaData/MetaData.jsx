@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Helmet } from "react-helmet";
 const MetaData = ({ title }) => {
   return (
@@ -9,4 +10,4 @@ const MetaData = ({ title }) => {
   );
 };
 
-export default MetaData;
+export default memo(MetaData);

@@ -1,26 +1,34 @@
 import {
+  lazy,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  memo,
+  useMemo,
+  Suspense,
+} from "react";
+import {
   FormControl,
   IconButton,
   useDisclosure,
   Input,
   Spinner,
 } from "@chakra-ui/react";
+import { ArrowBackIcon, ViewIcon, ArrowDownIcon } from "@chakra-ui/icons";
+import { io } from "socket.io-client";
+import { toast } from "react-toastify";
 import Messages from "../Message/Messages";
 import { ChatState } from "../../context/ChatProvider";
-import { ArrowBackIcon, ViewIcon, ArrowDownIcon } from "@chakra-ui/icons";
 import { useConfig, useMedia } from "../../hook/hook";
 import { getSender, getSenderFull } from "../../utils/ChatLogic";
-import ProfileModel from "../Modals/ProfileModel";
-import UpdateGroupChatModal from "../Modals/UpdateGroupChatModal";
-import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "../../api/baseUrl";
-import { toast } from "react-toastify";
-import { io } from "socket.io-client";
-import { memo } from "react";
-import { useMemo } from "react";
 import { USER_INFO_KEY } from "../../constants";
 import cn from "../../utils/cn";
-
+const ProfileModel = lazy(() => import("../Modals/ProfileModel"));
+const UpdateGroupChatModal = lazy(() =>
+  import("../Modals/UpdateGroupChatModal")
+);
 var selectedChatCompare;
 
 const SingleChat = () => {
@@ -201,11 +209,13 @@ const SingleChat = () => {
                   <>
                     {getSender(user, selectedChat?.users)}
 
-                    <ProfileModel
-                      user={getSenderFull(user, selectedChat?.users)}
-                      isOpen={isOpen}
-                      onClose={onClose}
-                    />
+                    <Suspense fallback={null}>
+                      <ProfileModel
+                        user={getSenderFull(user, selectedChat?.users)}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                      />
+                    </Suspense>
                   </>
                 ) : (
                   selectedChat?.chatName?.toUpperCase()
@@ -220,9 +230,11 @@ const SingleChat = () => {
                   icon={<ViewIcon fontSize="17px" />}
                 />
               ) : (
-                <UpdateGroupChatModal
-                  handleFetchMessages={handleFetchMessages}
-                />
+                <Suspense fallback={"loading"}>
+                  <UpdateGroupChatModal
+                    handleFetchMessages={handleFetchMessages}
+                  />
+                </Suspense>
               )}
             </>
           </div>

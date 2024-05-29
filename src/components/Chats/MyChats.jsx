@@ -1,14 +1,14 @@
+import { Suspense, useEffect, useState, lazy } from "react";
+import { Box } from "@chakra-ui/react";
+import { toast } from "react-toastify";
 import { useConfig, useMedia } from "../../hook/hook";
 import axios from "../../api/baseUrl";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { toast } from "react-toastify";
 import { ChatState } from "../../context/ChatProvider";
-import { Box } from "@chakra-ui/react";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../../utils/ChatLogic";
-import GroupChatModal from "../Modals/GroupChatModal";
 import { memo } from "react";
 import { USER_INFO_KEY } from "../../constants";
+const GroupChatModal = lazy(() => import("../Modals/GroupChatModal"));
 const MyChats = () => {
   const { token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));
 
@@ -62,8 +62,9 @@ const MyChats = () => {
           <div className="heading text-[22px] sm:text-[26px]">
             <h1 onClick={handleFetchChats}> My Chats </h1>
           </div>
-
-          <GroupChatModal />
+          <Suspense fallback={null}>
+            <GroupChatModal />
+          </Suspense>
         </div>
 
         <div className="chats_grid bg-[#F8F8F8] rounded-[6px]  border-solid border-[1px] border-[#ededed] h-[75vh] overflow-auto  ">

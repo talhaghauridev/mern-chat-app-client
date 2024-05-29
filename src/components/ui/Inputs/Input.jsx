@@ -2,6 +2,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import { useToggle } from "../../../hook/hook";
 import { memo } from "react";
+import cn from "../../../utils/cn";
 
 const Input = ({
   label,
@@ -23,9 +24,10 @@ const Input = ({
 
         <div className="input_box ">
           <div
-            className={`input relative max-w-[100%] border border-solid rounded-[4px] ${
+            className={cn(
+              "input relative max-w-[100%] border border-solid rounded-[4px]",
               error ? `border-[#d23f57] ` : `bottom-[#bdbcbcde]`
-            } `}
+            )}
           >
             {LIcon && (
               <span className="left_icon absolute h-[100%] left-[7px] flex items-center text-[#2c2c2c]">
@@ -38,8 +40,7 @@ const Input = ({
               id={id}
               name={id}
               {...rest}
-              className={`${className}  w-[100%] h-[100%] py-[10px] outline-none rounded-[4px] text-[16px]   text-[#2c2c2c] placeholder:text-[16px] placeholder:font-Work placeholder:font-light placeholder:transition-all 
-              `}
+              className={cn(" w-[100%] h-[100%] py-[10px] outline-none rounded-[4px] text-[16px]   text-[#2c2c2c] placeholder:text-[16px] placeholder:font-Work placeholder:font-light placeholder:transition-all",className)}
               style={{
                 paddingLeft: LIcon ? "38px" : "15px",
                 paddingRight: RIcon ? "38px" : "15px",

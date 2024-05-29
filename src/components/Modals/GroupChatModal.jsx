@@ -125,13 +125,11 @@ const GroupChatModal = () => {
 
           <div className="flex gap-[6px] pt-[15px] flex-wrap">
             {selectedUsers?.map((user) => (
-              <>
-                <UserBageItem
-                  user={user}
-                  key={user?._id}
-                  handleFunction={() => handleDelete(user)}
-                />
-              </>
+              <UserBageItem
+                user={user}
+                key={user?._id}
+                handleFunction={() => handleDelete(user)}
+              />
             ))}
           </div>
 
