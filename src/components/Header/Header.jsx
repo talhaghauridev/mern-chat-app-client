@@ -1,4 +1,3 @@
-// import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Avatar,

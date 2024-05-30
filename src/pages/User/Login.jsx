@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "../../api/baseUrl";
@@ -9,8 +8,8 @@ import { loginSchema } from "../../validation/validation";
 import { useMessage } from "../../hook/hook";
 import { Button, Heading, Input, MetaData } from "../../components/ui";
 import inputError from "../../utils/inputError";
-import { USER_INFO_KEY } from "../../constants";
-import { initialLoginState, loginReducer } from "../../utils/reducers";
+import { LOGIN, USER_INFO_KEY } from "../../constants";
+import { initialLoginState, signupReducer } from "../../utils/reducers";
 import { toast } from "react-toastify";
 
 const initialValues = {
@@ -19,18 +18,18 @@ const initialValues = {
 };
 
 const Login = () => {
-  const [state, dispatch] = useReducer(loginReducer, initialLoginState);
+  const [state, dispatch] = useReducer(signupReducer, initialLoginState);
   const navigate = useNavigate();
   const { error, message, loading } = state;
 
   // Handle Login User
   const loginUser = async (values) => {
     try {
-      dispatch({ type: "LOGIN_REQUEST" });
+      dispatch({ type: LOGIN.REQUEST });
       const { data } = await axios.post("/user/login", values);
 
       dispatch({
-        type: "LOGIN_SUCCESS",
+        type: LOGIN.SUCCESS,
         payload: { user: data.user, message: data.message },
       });
 
@@ -47,7 +46,7 @@ const Login = () => {
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
       dispatch({
-        type: "LOGIN_FAILURE",
+        type: LOGIN.FAILURE,
         payload: error?.response?.data?.message || error.message,
       });
     }

@@ -8,9 +8,9 @@ import { signUpSchema } from "../../validation/validation";
 import { Button, Heading, Input, MetaData } from "../../components/ui";
 import { useMessage } from "../../hook/hook";
 import inputError from "../../utils/inputError";
-import { USER_INFO_KEY } from "../../constants";
+import { SIGNUP, USER_INFO_KEY } from "../../constants";
 import { toast } from "react-toastify";
-import { initialSigmupState, signupReducer } from "../../utils/reducers";
+import { initialSignupState, signupReducer } from "../../utils/reducers";
 
 const initialValues = {
   name: "",
@@ -19,7 +19,7 @@ const initialValues = {
 };
 
 const SignUp = () => {
-  const [state, dispatch] = useReducer(signupReducer, initialSigmupState);
+  const [state, dispatch] = useReducer(signupReducer, initialSignupState);
   const { error, message, loading } = state;
   const [avatar, setAvatar] = useState("");
 
@@ -37,12 +37,12 @@ const SignUp = () => {
   //Handle Registet User
   const registerUser = async (formData) => {
     try {
-      dispatch({ type: "SIGNUP_REQUEST" });
+      dispatch({ type: SIGNUP.REQUEST });
 
       const { data } = await axios.post("/user/register", formData);
 
       dispatch({
-        type: "SIGNUP_SUCCESS",
+        type: SIGNUP.SUCCESS,
         payload: { user: data.user, message: data.message },
       });
 
@@ -57,7 +57,7 @@ const SignUp = () => {
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
       dispatch({
-        type: "SIGNUP_FAILURE",
+        type: SIGNUP.FAILURE,
         payload: error?.response?.data?.message || error.message,
       });
     }
@@ -140,8 +140,8 @@ const SignUp = () => {
 
             <button className="bg-[#f3f5f9] px-[10px] py-[12px] font-Work flex gap-[2px] items-center justify-center">
               Already have an account?
-              <Link to="/login" className="underline">
-                Login
+              <Link to="/SIGNUP" className="underline">
+                SIGNUP
               </Link>
             </button>
           </form>
