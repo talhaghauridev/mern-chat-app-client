@@ -65,7 +65,6 @@ const SingleChat = () => {
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(true);
   const messagesRef = useRef(null);
   const chatContainerRef = useRef(null);
-  console.log(latestMessages);
   // Handle Fetch Messages
   const handleFetchMessages = async () => {
     if (!selectedChat) return;
@@ -103,7 +102,6 @@ const SingleChat = () => {
       toast.error(error?.response?.data?.message);
     }
   };
-  console.log(messagesRef?.current);
 
   // Handle Typing
   const handleTyping = (e) => {

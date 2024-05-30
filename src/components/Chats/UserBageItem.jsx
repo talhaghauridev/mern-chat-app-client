@@ -11,7 +11,6 @@ const UserBageItem = ({ user, handleFunction }) => {
     [selectedChat, userInfo]
   );
 
-  console.log(isAdmin);
 
   return (
     <>

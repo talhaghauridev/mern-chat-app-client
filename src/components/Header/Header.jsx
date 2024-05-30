@@ -26,18 +26,12 @@ const Header = () => {
   const { user } = JSON.parse(localStorage.getItem(USER_INFO_KEY));
   const { notification, setNotification, selectedChat, setSelectedChat } =
     ChatState();
+    
   //Handle Logout User
-
   const handleLogout = () => {
     localStorage.removeItem(USER_INFO_KEY);
     navigate("/login");
   };
-  console.log("Notification:", notification);
-  notification &&
-    notification.map((noti) => {
-      console.log("Notification Users:", noti.chat.users);
-      console.log("Sender:", getSender(user, noti.chat.users));
-    });
 
   return (
     <>

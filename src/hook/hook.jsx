@@ -47,7 +47,6 @@ export const useMessage = (error, message, redirectPath) => {
   useEffect(() => {
     if (error) {
       toast.error(error);
-      console.log(error);
     }
     if (message) {
       toast.success(message);

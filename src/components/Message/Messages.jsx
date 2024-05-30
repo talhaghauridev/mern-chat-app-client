@@ -19,14 +19,14 @@ const Message = ({ messages }) => {
               key={m._id}
               className={cn(
                 "flex w-full items-center",
-                m.sender?._id !== user.user?._id
+                m.sender?._id !== user?.user?._id
                   ? "justify-start"
                   : "justify-end",
                 isSameUser(messages, m, i) ? "mt-[3px]" : "mt-[10px]"
               )}
             >
-              {(isSameSender(messages, m, i, user.user._id) ||
-                isLastMessage(messages, i, user.user._id)) && (
+              {(isSameSender(messages, m, i, user?.user._id) ||
+                isLastMessage(messages, i, user?.user._id)) && (
                 <Tooltip
                   label={m.sender?.name}
                   placement="bottom-start"
@@ -45,7 +45,7 @@ const Message = ({ messages }) => {
               <span
                 className={cn(
                   "rounded-[20px] py-[5px] px-[15px] flex items-center max-w-[300px]",
-                  m.sender?._id === user.user?._id
+                  m.sender?._id === user?.user?._id
                     ? "bg-[#BEE3F8]"
                     : "bg-[#B9F5D0]"
                 )}

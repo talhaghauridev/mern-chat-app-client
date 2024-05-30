@@ -43,7 +43,6 @@ const SearchSidebar = () => {
         setSearchResult(data?.users);
         setLoading(false);
 
-        console.log(config, searchResult);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -53,7 +52,6 @@ const SearchSidebar = () => {
 
   ///Handle Access Users
   const handleAccess = async (userId) => {
-    console.log(userId);
 
     try {
       setLoadingChat(true);
@@ -65,7 +63,6 @@ const SearchSidebar = () => {
       setSelectedChat(data);
       setLoadingChat(false);
       onClose();
-      console.log("selectedChat", selectedChat, "data", data);
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setLoadingChat(false);

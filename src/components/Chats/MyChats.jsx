@@ -50,13 +50,11 @@ const MyChats = () => {
     handleFetchChats();
   }, []);
 
-  const shortString = (str) => {
-    return str?.length > 12 ? `${str.slice(0, 12)}...` : str;
-  };
-
   const selectChat = (chat) => {
     return selectedChat && selectedChat._id === chat._id;
   };
+
+  const latestMessageArray = [...[latestMessages[latestMessages?.length - 1]]];
   return (
     <div
       id="aside"
@@ -94,7 +92,7 @@ const MyChats = () => {
                         </div>
 
                         {latestMessages && latestMessages?.length > 0
-                          ? latestMessages.map(
+                          ? latestMessageArray.map(
                               (latest) =>
                                 latest?.chat?._id === chat?._id && (
                                   <LatestMessageBox

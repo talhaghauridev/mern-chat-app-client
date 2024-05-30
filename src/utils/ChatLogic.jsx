@@ -1,5 +1,4 @@
 export const getSender = (loggedUser, users) => {
-  console.log(users?.length);
   if (!users || users && users?.length < 2) {
     console.error("Invalid users array:", users);
     return "Unknown Sender";
