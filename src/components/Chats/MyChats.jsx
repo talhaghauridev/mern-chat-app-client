@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState, lazy } from "react";
+import { Suspense, useEffect, useState, lazy, memo } from "react";
 import { Box } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useConfig, useMedia } from "../../hook/hook";
@@ -6,9 +6,10 @@ import axios from "../../api/baseUrl";
 import { ChatState } from "../../context/ChatProvider";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../../utils/ChatLogic";
-import { memo } from "react";
 import { USER_INFO_KEY } from "../../constants";
+
 const GroupChatModal = lazy(() => import("../Modals/GroupChatModal"));
+
 const MyChats = () => {
   const { token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));
 
@@ -30,19 +31,13 @@ const MyChats = () => {
   const handleFetchChats = async () => {
     try {
       setLoading(true);
-
       const { data } = await axios.get("/chat", config);
       setChats(data && data);
       setLoading(false);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || error.message);
       setLoading(false);
     }
-  };
-
-  //Handle Selected Chats
-  const handleSelectedChats = (chat) => {
-    setSelectedChat(chat);
   };
 
   useEffect(() => {
@@ -50,23 +45,27 @@ const MyChats = () => {
     handleFetchChats();
   }, []);
 
-  const selectChat = (chat) => {
-    return selectedChat && selectedChat._id === chat._id;
-  };
-
   useEffect(() => {
-    const latestChatMessage =
-      chats &&
-      chats
+    if (chats) {
+      const latestChatMessage = chats
         .map((item) => ({
           content: item.latestMessage?.content,
           sender: item.latestMessage?.sender,
           chat: item.latestMessage?.chat,
         }))
         .filter((item) => item.content && item.sender && item.chat);
-
-    setLatestMessages(latestChatMessage);
+      setLatestMessages(latestChatMessage);
+    }
   }, [chats]);
+
+  const handleSelectedChats = (chat) => {
+    setSelectedChat(chat);
+  };
+
+  const selectChat = (chat) => {
+    return selectedChat && selectedChat._id === chat._id;
+  };
+
   return (
     <div
       id="aside"
@@ -83,37 +82,36 @@ const MyChats = () => {
           </Suspense>
         </div>
 
-        <div className="chats_grid bg-[#F8F8F8] rounded-[6px]  border-solid border-[1px] border-[#ededed] h-[75vh] overflow-auto  ">
+        <div className="chats_grid bg-[#F8F8F8] rounded-[6px]  border-solid border-[1px] border-[#ededed] h-[75vh] overflow-auto">
           <div className="flex flex-col py-[15px] px-[10px] rounded-lg w-[100%] h-[100%]">
             {!loading ? (
               chats ? (
                 <div className="flex flex-col gap-[10px]">
-                  {chats?.map((chat) => {
-                    return (
-                      <Box
-                        onClick={() => handleSelectedChats(chat)}
-                        className="cursor-pointer rounded-lg px-[15px] py-[10px]"
-                        bg={selectChat(chat) ? "#38B2AC" : "#E8E8E8"}
-                        color={selectChat(chat) ? "white" : "black"}
-                        key={chat?._id}
-                      >
-                        <div className="font-Work sm:text-[18.5px] text-[16px]">
-                          {!chat?.isGroupChat
-                            ? getSender(loggedUser, chat?.users)
-                            : chat?.chatName}
-                        </div>
-                        {latestMessages.map(
-                          (latest) =>
-                            latest?.chat?._id === chat?._id && (
-                              <LatestMessageBox
-                                name={latest?.sender?.name}
-                                message={latest?.content}
-                              />
-                            )
-                        )}
-                      </Box>
-                    );
-                  })}
+                  {chats?.map((chat) => (
+                    <Box
+                      onClick={() => handleSelectedChats(chat)}
+                      className="cursor-pointer rounded-lg px-[15px] py-[10px]"
+                      bg={selectChat(chat) ? "#38B2AC" : "#E8E8E8"}
+                      color={selectChat(chat) ? "white" : "black"}
+                      key={chat?._id}
+                    >
+                      <div className="font-Work sm:text-[18.5px] text-[16px]">
+                        {!chat?.isGroupChat
+                          ? getSender(loggedUser, chat?.users)
+                          : chat?.chatName}
+                      </div>
+                      {latestMessages.map(
+                        (latest) =>
+                          latest?.chat?._id === chat?._id && (
+                            <LatestMessageBox
+                              key={latest?.chat?._id}
+                              name={latest?.sender?.name}
+                              message={latest?.content}
+                            />
+                          )
+                      )}
+                    </Box>
+                  ))}
                 </div>
               ) : (
                 <ChatLoading />

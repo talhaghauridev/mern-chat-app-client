@@ -52,7 +52,6 @@ const SingleChat = () => {
     setLatestMessages,
   } = ChatState();
 
-  console.log(latestMessages);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useMedia("(max-width: 768px)");
   const config = useConfig(token);
