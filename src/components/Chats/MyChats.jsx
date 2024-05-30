@@ -22,8 +22,8 @@ const MyChats = () => {
     setSelectedChat,
     chats,
     setChats,
-    fetchAgain,
     latestMessages,
+    setLatestMessages,
   } = ChatState();
 
   //Handle Fetch Chats
@@ -54,11 +54,19 @@ const MyChats = () => {
     return selectedChat && selectedChat._id === chat._id;
   };
 
-  const latestMessageArray =
-    latestMessages?.length > 0
-      ? [latestMessages[latestMessages.length - 1]]
-      : [];
+  useEffect(() => {
+    const latestChatMessage =
+      chats &&
+      chats
+        .map((item) => ({
+          content: item.latestMessage?.content,
+          sender: item.latestMessage?.sender,
+          chat: item.latestMessage?.chat,
+        }))
+        .filter((item) => item.content && item.sender && item.chat);
 
+    setLatestMessages(latestChatMessage);
+  }, [chats]);
   return (
     <div
       id="aside"
@@ -94,23 +102,15 @@ const MyChats = () => {
                             ? getSender(loggedUser, chat?.users)
                             : chat?.chatName}
                         </div>
-
-                        {latestMessages && latestMessages?.length > 0
-                          ? latestMessageArray.map(
-                              (latest) =>
-                                latest?.chat?._id === chat?._id && (
-                                  <LatestMessageBox
-                                    name={latest?.sender?.name}
-                                    message={latest?.content}
-                                  />
-                                )
-                            )
-                          : chat?.latestMessage && (
+                        {latestMessages.map(
+                          (latest) =>
+                            latest?.chat?._id === chat?._id && (
                               <LatestMessageBox
-                                name={chat?.latestMessage?.sender?.name}
-                                message={chat?.latestMessage.content}
+                                name={latest?.sender?.name}
+                                message={latest?.content}
                               />
-                            )}
+                            )
+                        )}
                       </Box>
                     );
                   })}

@@ -40,7 +40,6 @@ const SingleChat = () => {
       }),
     [token]
   );
-
   const {
     user,
     selectedChat,
@@ -53,12 +52,13 @@ const SingleChat = () => {
     setLatestMessages,
   } = ChatState();
 
+  console.log(latestMessages);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useMedia("(max-width: 768px)");
   const config = useConfig(token);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [socketConnection, setSocketConnection] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -140,14 +140,35 @@ const SingleChat = () => {
     setIsScrolledToBottom(scrollHeight - scrollTop === clientHeight);
   }, []);
 
+  //Update Latest Messages
   const updateLatestMessages = (newMessage) => {
     setLatestMessages((prevMessages) => {
-      const filteredMessages = prevMessages.filter(
-        (msg) => msg.sender._id !== newMessage.sender._id
+      const newMapMessage = {
+        content: newMessage.content,
+        sender: newMessage.sender,
+        chat: newMessage.chat,
+      };
+      const existingMessageIndex = prevMessages.findIndex(
+        (msg) =>
+          msg.sender._id === newMapMessage.sender._id &&
+          msg.chat._id === newMapMessage.chat._id
       );
-      return [...filteredMessages, newMessage];
+
+      if (existingMessageIndex !== -1) {
+        const updatedMessages = [...prevMessages];
+        updatedMessages[existingMessageIndex] = newMapMessage;
+        return updatedMessages;
+      } else {
+        return [
+          ...prevMessages.filter(
+            (item) => item?.chat?._id !== newMapMessage.chat._id
+          ),
+          newMapMessage,
+        ];
+      }
     });
   };
+
   // Setup socket connection and event listeners
   useEffect(() => {
     socket.emit("setup", user?.user);
@@ -177,12 +198,13 @@ const SingleChat = () => {
         if (!notification?.includes(newMessageReceived)) {
           setNotification([newMessageReceived, ...notification]);
           setFetchAgain(!fetchAgain);
+          updateLatestMessages(newMessageReceived);
         }
       } else {
+        updateLatestMessages(newMessageReceived);
         setMessages([...messages, newMessageReceived]);
         setFetchAgain(!fetchAgain);
       }
-      updateLatestMessages(newMessageReceived);
       handleScrollBottom();
     });
   }, [
@@ -291,6 +313,7 @@ const SingleChat = () => {
               onKeyDown={(e) =>
                 newMessage?.trim() && e.key === "Enter" && handleSendMessage(e)
               }
+              isDisabled={loading}
               isRequired
               bg="whitesmoke"
             >
