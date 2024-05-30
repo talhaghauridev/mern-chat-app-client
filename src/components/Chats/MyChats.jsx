@@ -54,7 +54,11 @@ const MyChats = () => {
     return selectedChat && selectedChat._id === chat._id;
   };
 
-  const latestMessageArray = [...[latestMessages[latestMessages?.length - 1]]];
+  const latestMessageArray =
+    latestMessages?.length > 0
+      ? [latestMessages[latestMessages.length - 1]]
+      : [];
+
   return (
     <div
       id="aside"

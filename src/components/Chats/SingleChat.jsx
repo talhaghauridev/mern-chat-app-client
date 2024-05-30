@@ -145,7 +145,7 @@ const SingleChat = () => {
       const filteredMessages = prevMessages.filter(
         (msg) => msg.sender._id !== newMessage.sender._id
       );
-      return [newMessage, ...filteredMessages];
+      return [...filteredMessages, newMessage];
     });
   };
   // Setup socket connection and event listeners
@@ -179,10 +179,10 @@ const SingleChat = () => {
           setFetchAgain(!fetchAgain);
         }
       } else {
-        updateLatestMessages(newMessageReceived);
         setMessages([...messages, newMessageReceived]);
         setFetchAgain(!fetchAgain);
       }
+      updateLatestMessages(newMessageReceived);
       handleScrollBottom();
     });
   }, [
