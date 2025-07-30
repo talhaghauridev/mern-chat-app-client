@@ -33,17 +33,11 @@ const SignUp = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  //Handle Registet User
+  // Handle Register User
   const registerUser = async (formData) => {
     try {
       dispatch({ type: SIGNUP.REQUEST });
-
       const { data } = await axios.post("/user/register", formData);
-
-      dispatch({
-        type: SIGNUP.SUCCESS,
-        payload: { user: data.user, message: data.message },
-      });
 
       localStorage.setItem(
         USER_INFO_KEY,
@@ -53,6 +47,12 @@ const SignUp = () => {
           token: data.token,
         })
       );
+
+      dispatch({
+        type: SIGNUP.SUCCESS,
+        payload: { user: data.user, message: data.message },
+      });
+      navigate("/chat");
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
       dispatch({
@@ -76,9 +76,9 @@ const SignUp = () => {
   return (
     <>
       <MetaData
-          title={"Sign Up - Chat App"}
-          description={"Sign up to Chat App and connect with friends instantly"}
-        />
+        title={"Sign Up - Chat App"}
+        description={"Sign up to Chat App and connect with friends instantly"}
+      />
       <section
         id="signUp"
         className="relative overflow-hidden w-[100%] flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]">
@@ -135,9 +135,10 @@ const SignUp = () => {
             </div>
 
             <Button
-              label={loading ? "Submitting..." : "Submit"}
-              className="bg-[#3b5998] px-[10px] py-[12px] text-[18px] mt-[10px]"
+              label="Create Account"
+              className="mt-4 text-lg"
               type="submit"
+              loading={loading}
               disabled={loading}
             />
 

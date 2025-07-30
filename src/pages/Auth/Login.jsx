@@ -4,7 +4,7 @@ import { LOGIN, USER_INFO_KEY } from "@/constants";
 import { useMessage } from "@/hook/hook";
 import { AlternateEmailOutlinedIcon, LockOutlinedIcon } from "@/icons";
 import inputError from "@/utils/inputError";
-import { initialLoginState, signupReducer } from "@/utils/reducers";
+import { initialLoginState, loginReducer, signupReducer } from "@/utils/reducers";
 import { loginSchema } from "@/validation/validation";
 import { useFormik } from "formik";
 import { useReducer } from "react";
@@ -17,7 +17,7 @@ const initialValues = {
 };
 
 const Login = () => {
-  const [state, dispatch] = useReducer(signupReducer, initialLoginState);
+  const [state, dispatch] = useReducer(loginReducer, initialLoginState); 
   const navigate = useNavigate();
   const { error, message, loading } = state;
 
@@ -26,11 +26,6 @@ const Login = () => {
     try {
       dispatch({ type: LOGIN.REQUEST });
       const { data } = await axios.post("/user/login", values);
-
-      dispatch({
-        type: LOGIN.SUCCESS,
-        payload: { user: data.user, message: data.message },
-      });
 
       localStorage.setItem(
         USER_INFO_KEY,
@@ -41,7 +36,13 @@ const Login = () => {
         })
       );
 
+      dispatch({
+        type: LOGIN.SUCCESS,
+        payload: { user: data.user, message: data.message },
+      });
+
       navigate("/chat");
+
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
       dispatch({
@@ -59,7 +60,7 @@ const Login = () => {
 
   const { handleSubmit, getFieldProps } = formik;
   useMessage(null, message, "/chat");
-
+console.log({loading})
   return (
     <>
       <MetaData
@@ -101,9 +102,10 @@ const Login = () => {
             />
 
             <Button
-              label={loading ? "Submitting..." : "Submit"}
-              className="bg-[#3b5998] px-[10px] py-[12px] text-[18px] mt-[10px]"
+              label="Sign In"
+              className="mt-4 text-lg"
               type="submit"
+              loading={loading}
               disabled={loading}
             />
 
