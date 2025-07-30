@@ -75,7 +75,10 @@ const SignUp = () => {
 
   return (
     <>
-      <MetaData title={"Sign Up - Chat App"} />
+      <MetaData
+          title={"Sign Up - Chat App"}
+          description={"Sign up to Chat App and connect with friends instantly"}
+        />
       <section
         id="signUp"
         className="relative overflow-hidden w-[100%] flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]">

@@ -62,7 +62,10 @@ const Login = () => {
 
   return (
     <>
-      <MetaData title={"Login - Chat App"} />
+      <MetaData
+          title={"Login - Chat App"}
+          description={"Login to Chat App and start messaging in real time"}
+        />
       <section
         id="login"
         className="relative overflow-hidden w-[100%]  flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]">
