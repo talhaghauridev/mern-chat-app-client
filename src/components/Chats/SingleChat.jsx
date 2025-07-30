@@ -18,16 +18,16 @@ import {
 import { ArrowBackIcon, ViewIcon, ArrowDownIcon } from "@chakra-ui/icons";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
-import Messages from "../Message/Messages";
-import { ChatState } from "../../context/ChatProvider";
-import { useConfig, useMedia } from "../../hook/hook";
-import { getSender, getSenderFull } from "../../utils/ChatLogic";
-import axios from "../../api/baseUrl";
-import { USER_INFO_KEY } from "../../constants";
-import cn from "../../utils/cn";
-const ProfileModel = lazy(() => import("../Modals/ProfileModel"));
-const UpdateGroupChatModal = lazy(() =>
-  import("../Modals/UpdateGroupChatModal")
+import Messages from "@/components/Message/Messages";
+import { ChatState } from "@/context/ChatProvider";
+import { useConfig, useMedia } from "@/hook/hook";
+import { getSender, getSenderFull } from "@/utils/ChatLogic";
+import axios from "@/api/baseUrl";
+import { USER_INFO_KEY } from "@/constants";
+import cn from "@/utils/cn";
+const ProfileModel = lazy(() => import("@/components/Modals/ProfileModel"));
+const UpdateGroupChatModal = lazy(
+  () => import("@/components/Modals/UpdateGroupChatModal")
 );
 var selectedChatCompare;
 

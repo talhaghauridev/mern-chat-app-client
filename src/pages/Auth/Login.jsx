@@ -1,15 +1,14 @@
-import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import axios from "../../api/baseUrl";
-import { Link, useNavigate } from "react-router-dom";
-import { useReducer } from "react";
+import axios from "@/api/baseUrl";
+import { Button, Heading, Input, MetaData } from "@/components/ui";
+import { LOGIN, USER_INFO_KEY } from "@/constants";
+import { useMessage } from "@/hook/hook";
+import { AlternateEmailOutlinedIcon, LockOutlinedIcon } from "@/icons";
+import inputError from "@/utils/inputError";
+import { initialLoginState, signupReducer } from "@/utils/reducers";
+import { loginSchema } from "@/validation/validation";
 import { useFormik } from "formik";
-import { loginSchema } from "../../validation/validation";
-import { useMessage } from "../../hook/hook";
-import { Button, Heading, Input, MetaData } from "../../components/ui";
-import inputError from "../../utils/inputError";
-import { LOGIN, USER_INFO_KEY } from "../../constants";
-import { initialLoginState, signupReducer } from "../../utils/reducers";
+import { useReducer } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const initialValues = {
@@ -63,7 +62,7 @@ const Login = () => {
 
   return (
     <>
-      <MetaData title={"Login -- Chat App"} />
+      <MetaData title={"Login - Chat App"} />
       <section
         id="login"
         className="relative overflow-hidden w-[100%]  flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]"
@@ -106,7 +105,7 @@ const Login = () => {
 
             <button className="bg-[#f3f5f9] px-[10px] py-[12px] font-Work flex gap-[2px] mt-[16px] items-center justify-center">
               {"Don't have an account? "}
-              <Link to="/signUp" className="underline">
+              <Link to="/signup" className="underline">
                 Sign Up
               </Link>
             </button>

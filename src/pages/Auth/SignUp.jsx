@@ -1,16 +1,15 @@
-import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import axios from "../../api/baseUrl";
+import { AlternateEmailOutlinedIcon, LockOutlinedIcon } from "@/icons";
+import axios from "@/api/baseUrl";
 import { Link } from "react-router-dom";
 import { useReducer, useState } from "react";
 import { useFormik } from "formik";
-import { signUpSchema } from "../../validation/validation";
-import { Button, Heading, Input, MetaData } from "../../components/ui";
-import { useMessage } from "../../hook/hook";
-import inputError from "../../utils/inputError";
-import { SIGNUP, USER_INFO_KEY } from "../../constants";
+import { signUpSchema } from "@/validation/validation";
+import { Button, Heading, Input, MetaData } from "@/components/ui";
+import { useMessage } from "@/hook/hook";
+import inputError from "@/utils/inputError";
+import { SIGNUP, USER_INFO_KEY } from "@/constants";
 import { toast } from "react-toastify";
-import { initialSignupState, signupReducer } from "../../utils/reducers";
+import { initialSignupState, signupReducer } from "@/utils/reducers";
 
 const initialValues = {
   name: "",
@@ -76,7 +75,7 @@ const SignUp = () => {
 
   return (
     <>
-      <MetaData title={"Sign Up -- Chat App"} />
+      <MetaData title={"Sign Up - Chat App"} />
       <section
         id="signUp"
         className="relative overflow-hidden w-[100%] flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]"
@@ -140,8 +139,8 @@ const SignUp = () => {
 
             <button className="bg-[#f3f5f9] px-[10px] py-[12px] font-Work flex gap-[2px] items-center justify-center">
               Already have an account?
-              <Link to="/SIGNUP" className="underline">
-                SIGNUP
+              <Link to="/login" className="underline">
+                Login
               </Link>
             </button>
           </form>

@@ -1,8 +1,8 @@
-import ChatBox from "../../components/Chats/ChatBox";
-import MyChats from "../../components/Chats/MyChats";
-import Header from "../../components/Header/Header";
-import { useMedia } from "../../hook/hook";
-import {MetaData} from "../../components/ui"
+import ChatBox from "@/components/Chats/ChatBox";
+import MyChats from "@/components/Chats/MyChats";
+import Header from "@/components/Header/Header";
+import { MetaData } from "@/components/ui";
+import { useMedia } from "@/hook/hook";
 const Chat = () => {
   const isMobile = useMedia("(max-width: 768px)");
 
@@ -24,6 +24,7 @@ const Chat = () => {
           <ChatBox />
         </div>
       </section>
+      
     </>
   );
 };

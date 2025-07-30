@@ -1,14 +1,14 @@
 import { Suspense, useEffect, useState, lazy, memo } from "react";
 import { Box } from "@chakra-ui/react";
 import { toast } from "react-toastify";
-import { useConfig, useMedia } from "../../hook/hook";
-import axios from "../../api/baseUrl";
-import { ChatState } from "../../context/ChatProvider";
+import { useConfig, useMedia } from "@/hook/hook";
+import axios from "@/api/baseUrl";
+import { ChatState } from "@/context/ChatProvider";
 import ChatLoading from "./ChatLoading";
-import { getSender } from "../../utils/ChatLogic";
-import { USER_INFO_KEY } from "../../constants";
+import { getSender } from "@/utils/ChatLogic";
+import { USER_INFO_KEY } from "@/constants";
 
-const GroupChatModal = lazy(() => import("../Modals/GroupChatModal"));
+const GroupChatModal = lazy(() => import("@/components/Modals/GroupChatModal"));
 
 const MyChats = () => {
   const { token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));

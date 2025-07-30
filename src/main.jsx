@@ -1,17 +1,14 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { ChakraProvider } from "@chakra-ui/react";
-import ChatProvider from "./context/ChatProvider.jsx";
-import "./styles/main.css";
 import App from "./App.jsx";
+import "./styles/main.css";
+import "nprogress/nprogress.css";
+import NProgress from "nprogress";
+import AppProvider from "@/lib/AppProvider.jsx";
+
+NProgress.configure({ showSpinner: false, trickleSpeed: 200, minimum: 0.1 });
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <ChakraProvider>
-      <ToastContainer />
-      <ChatProvider>
-        <App />
-      </ChatProvider>
-    </ChakraProvider>
-  </BrowserRouter>
+    <AppProvider>
+      <App />
+    </AppProvider>
 );

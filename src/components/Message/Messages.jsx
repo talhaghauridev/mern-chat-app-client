@@ -1,8 +1,8 @@
 import React from "react";
 import { Avatar, Tooltip } from "@chakra-ui/react";
-import { ChatState } from "../../context/ChatProvider";
-import { isLastMessage, isSameSender, isSameUser } from "../../utils/ChatLogic";
-import cn from "../../utils/cn";
+import { ChatState } from "@/context/ChatProvider";
+import { isLastMessage, isSameSender, isSameUser } from "@/utils/ChatLogic";
+import cn from "@/utils/cn";
 
 const Message = ({ messages }) => {
   const { user } = ChatState();

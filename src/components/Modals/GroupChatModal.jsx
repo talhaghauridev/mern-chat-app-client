@@ -1,3 +1,11 @@
+import axios from "@/api/baseUrl";
+import UserBageItem from "@/components/Chats/UserBageItem";
+import UserListIItem from "@/components/Chats/UserListIItem";
+import Modal from "@/components/ui/Modal/Modal";
+import { USER_INFO_KEY } from "@/constants";
+import { ChatState } from "@/context/ChatProvider";
+import { useConfig, useMedia } from "@/hook/hook";
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
@@ -9,18 +17,8 @@ import {
   Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
-import axios from "../../api/baseUrl";
-import Modal from "../ui/Modal/Modal";
-import { useConfig, useMedia } from "../../hook/hook";
-import { AddIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { toast } from "react-toastify";
-import UserListIItem from "../Chats/UserListIItem";
-import UserBageItem from "../Chats/UserBageItem";
-import { ChatState } from "../../context/ChatProvider";
-import { useLocation } from "react-router-dom";
-import { memo } from "react";
-import { USER_INFO_KEY } from "../../constants";
 
 const GroupChatModal = () => {
   const { token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));

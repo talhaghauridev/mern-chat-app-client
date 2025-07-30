@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import axios from "@/api/baseUrl";
+import { USER_INFO_KEY } from "@/constants";
+import { ChatState } from "@/context/ChatProvider";
+import { useConfig, useNetwork } from "@/hook/hook";
+import { SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Drawer,
@@ -12,14 +16,11 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useConfig, useNetwork } from "../../hook/hook";
-import axios from "../../api/baseUrl";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import ChatLoading from "../Chats/ChatLoading";
-import UserListIItem from "../Chats/UserListIItem";
-import { SearchIcon } from "@chakra-ui/icons";
-import { ChatState } from "../../context/ChatProvider";
-import { USER_INFO_KEY } from "../../constants";
+import ChatLoading from "@/components/Chats/ChatLoading";
+import UserListIItem from "@/components/Chats/UserListIItem";
+
 const SearchSidebar = () => {
   const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
 

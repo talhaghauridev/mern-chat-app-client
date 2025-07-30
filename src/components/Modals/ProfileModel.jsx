@@ -1,5 +1,5 @@
 import { memo } from "react";
-import Modal from "../ui/Modal/Modal";
+import Modal from "@/components/ui/Modal/Modal";
 import { Button, Image, ModalCloseButton } from "@chakra-ui/react";
 
 const ProfileModel = ({ isOpen, onClose , user}) => {

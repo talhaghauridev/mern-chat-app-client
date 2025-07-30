@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
-import { useMedia } from "../../hook/hook";
-import { ChatState } from "../../context/ChatProvider";
+import { useMedia } from "@/hook/hook";
+import { ChatState } from "@/context/ChatProvider";
 import SingleChat from "./SingleChat";
 
 const ChatBox = () => {

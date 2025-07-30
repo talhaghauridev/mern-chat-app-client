@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState,createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { USER_INFO_KEY } from "../constants";
+import { USER_INFO_KEY } from "@/constants";
 
 const Chatcontext = createContext()
 

@@ -13,10 +13,10 @@ import { Suspense, lazy } from "react";
 import { BellIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import SearchSidebar from "./SearchSidebar";
-import { ChatState } from "../../context/ChatProvider";
-import { getSender } from "../../utils/ChatLogic";
-import { USER_INFO_KEY } from "../../constants";
-const ProfileModel = lazy(() => import("../Modals/ProfileModel"));
+import { ChatState } from "@/context/ChatProvider";
+import { getSender } from "@/utils/ChatLogic";
+import { USER_INFO_KEY } from "@/constants";
+const ProfileModel = lazy(() => import("@/components/Modals/ProfileModel"));
 
 const Header = () => {
   const navigate = useNavigate();

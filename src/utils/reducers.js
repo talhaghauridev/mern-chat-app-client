@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP } from "../constants";
+import { LOGIN, SIGNUP } from "@/constants";
 
 export const initialLoginState = {
   loading: false,

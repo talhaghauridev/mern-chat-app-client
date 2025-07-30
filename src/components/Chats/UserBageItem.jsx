@@ -1,7 +1,7 @@
 import { Box, CloseButton } from "@chakra-ui/react";
 import { memo,useMemo } from "react";
-import { ChatState } from "../../context/ChatProvider";
-import { USER_INFO_KEY } from "../../constants";
+import { ChatState } from "@/context/ChatProvider";
+import { USER_INFO_KEY } from "@/constants";
 
 const UserBageItem = ({ user, handleFunction }) => {
   const { userInfo } = JSON.parse(localStorage.getItem(USER_INFO_KEY));

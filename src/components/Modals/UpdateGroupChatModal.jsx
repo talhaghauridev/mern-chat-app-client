@@ -1,4 +1,11 @@
-import { memo, useState } from "react";
+import axios from "@/api/baseUrl";
+import UserBageItem from "@/components/Chats/UserBageItem";
+import UserListIItem from "@/components/Chats/UserListIItem";
+import Modal from "@/components/ui/Modal/Modal";
+import { USER_INFO_KEY } from "@/constants";
+import { ChatState } from "@/context/ChatProvider";
+import { useConfig } from "@/hook/hook";
+import { ViewIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
@@ -11,15 +18,8 @@ import {
   Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
-import axios from "../../api/baseUrl";
-import Modal from "../ui/Modal/Modal";
-import { useConfig } from "../../hook/hook";
-import { ViewIcon } from "@chakra-ui/icons";
+import { memo, useState } from "react";
 import { toast } from "react-toastify";
-import UserListIItem from "../Chats/UserListIItem";
-import UserBageItem from "../Chats/UserBageItem";
-import { ChatState } from "../../context/ChatProvider";
-import { USER_INFO_KEY } from "../../constants";
 
 const UpdateGroupChatModal = ({ handleFetchMessages }) => {
   const { user, token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));
