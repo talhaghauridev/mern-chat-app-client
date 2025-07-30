@@ -122,7 +122,7 @@ const SingleChat = () => {
     if (chatContainerRef?.current) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   }, [chatContainerRef]);
@@ -259,7 +259,9 @@ const SingleChat = () => {
           <div
             ref={chatContainerRef}
             className="chats_grid bg-[#E8E8E8] h-[75vh] overflow-auto rounded-[6px]  border-solid border-[1px] border-[#ededed] relative">
-            <div ref={messagesRef}>
+            <div
+              ref={messagesRef}
+              className="h-full">
               <div className="h-[100%] flex flex-col items-center">
                 {loading ? (
                   <div className="messageLoading h-[100%] w-[100%] flex items-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -273,15 +275,20 @@ const SingleChat = () => {
                 ) : (
                   <div className="flex flex-col items-center justify-between w-[100%] h-[100%]">
                     <Messages messages={messages} />
-                      {isTyping && (
-                        <div className="flex items-center ml-4 mt-2 py-4 space-x-2">
-                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-                        </div>
-                      )}
-           
 
+                    {isTyping && (
+                      <div className="flex items-center ml-4 mt-2 py-4 space-x-2">
+                        <div
+                          className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                          style={{ animationDelay: "0s" }}></div>
+                        <div
+                          className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                          style={{ animationDelay: "0.2s" }}></div>
+                        <div
+                          className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                          style={{ animationDelay: "0.4s" }}></div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -291,7 +298,7 @@ const SingleChat = () => {
           <div className="absolute w-full  items-center justify-center  bottom-[85px] hidden">
             <div
               className={cn(
-                "sticky flex items-center justify-center transition-all" ,
+                "sticky flex items-center justify-center transition-all",
                 !isScrolledToBottom && !loading
                   ? "bottom-[85px] opacity-1  "
                   : "bottom-0 opacity-0 "
