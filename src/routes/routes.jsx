@@ -9,37 +9,37 @@ const SignUp = lazyWithProgress(() => import("@/pages/Auth/SignUp"));
 const NotFound = lazyWithProgress(() => import("@/pages/NotFound/NotFound"));
 
 const AppRoutes = () => {
-   return (
-      <Routes>
-         <Route element={<ProtectRoute />}>
-            <Route
-               path="/chat"
-               element={
-                  <Suspense fallback={<ChatSkeleton />}>
-                     <Chat />
-                  </Suspense>
-               }
-            />
-            <Route
-               path="/"
-               element={<Navigate to={"/chat"} />}
-            />
-         </Route>
+  return (
+    <Routes>
+      <Route element={<ProtectRoute />}>
+        <Route
+          path="/chat"
+          element={
+            <Suspense fallback={<ChatSkeleton />}>
+              <Chat />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/"
+          element={<Navigate to={"/chat"} />}
+        />
+      </Route>
 
-         <Route
-            path="/login"
-            element={<Login />}
-         />
-         <Route
-            path="/signup"
-            element={<SignUp />}
-         />
-         <Route
-            path="*"
-            element={<NotFound />}
-         />
-      </Routes>
-   );
+      <Route
+        path="/login"
+        element={<Login />}
+      />
+      <Route
+        path="/signup"
+        element={<SignUp />}
+      />
+      <Route
+        path="*"
+        element={<NotFound />}
+      />
+    </Routes>
+  );
 };
 
 export default AppRoutes;

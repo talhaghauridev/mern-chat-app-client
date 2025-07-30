@@ -1,8 +1,9 @@
 {
-   "trailingComma": "none",
-   "tabWidth": 3,
+   "trailingComma": "es5",
+   "tabWidth": 2,
    "bracketSameLine": true,
-   "printWidth": 150,
+   "printWidth": 100,
    "singleAttributePerLine": true,
-   "endOfLine": "crlf"
-}
+   "endOfLine": "lf"
+ }
+ 
