@@ -5,14 +5,14 @@ import { BrowserRouter } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 const AppProvider = ({ children }) => {
-  return (
-    <BrowserRouter>
-      <ChakraProvider>
-        <ToastContainer />
-        <ChatProvider>{children}</ChatProvider>
-      </ChakraProvider>
-    </BrowserRouter>
-  );
+   return (
+      <BrowserRouter>
+         <ChakraProvider>
+            <ToastContainer />
+            <ChatProvider>{children}</ChatProvider>
+         </ChakraProvider>
+      </BrowserRouter>
+   );
 };
 
 export default AppProvider;

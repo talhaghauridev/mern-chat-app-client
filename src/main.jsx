@@ -8,7 +8,7 @@ import AppProvider from "@/lib/AppProvider.jsx";
 NProgress.configure({ showSpinner: false, trickleSpeed: 200, minimum: 0.1 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <AppProvider>
+   <AppProvider>
       <App />
-    </AppProvider>
+   </AppProvider>
 );

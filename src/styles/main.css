@@ -2,32 +2,32 @@
 @import "./tailwind.css";
 
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  list-style: none;
-  text-decoration: none;
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
+   list-style: none;
+   text-decoration: none;
 }
 
 #nprogress .bar {
-  background: #FDFFFD !important;
-  height: 3.5px !important;
+   background: #fdfffd !important;
+   height: 3.5px !important;
 }
 
 #nprogress .peg {
-  box-shadow:
-     0 0 10px #FDFFFD,
-     0 0 5px #FDFFFD !important;
+   box-shadow:
+      0 0 10px #fdfffd,
+      0 0 5px #fdfffd !important;
 }
 
 .input_wrapper svg {
-  font-size: 22px !important;
+   font-size: 22px !important;
 }
 
 .chats_grid::-webkit-scrollbar {
-  display: none;
+   display: none;
 }
 .chats_grid::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1;
-  border-radius: 2px;
+   background-color: #c1c1c1;
+   border-radius: 2px;
 }
