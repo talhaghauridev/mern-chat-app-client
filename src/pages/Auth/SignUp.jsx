@@ -1,6 +1,6 @@
 import { AlternateEmailOutlinedIcon, LockOutlinedIcon } from "@/icons";
 import axios from "@/api/baseUrl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useReducer, useState } from "react";
 import { useFormik } from "formik";
 import { signUpSchema } from "@/validation/validation";
@@ -21,7 +21,7 @@ const SignUp = () => {
   const [state, dispatch] = useReducer(signupReducer, initialSignupState);
   const { error, message, loading } = state;
   const [avatar, setAvatar] = useState("");
-
+  const navigate = useNavigate()
   //Handle Avatar
   const handleAvatar = (e) => {
     const reader = new FileReader();
@@ -52,7 +52,7 @@ const SignUp = () => {
         type: SIGNUP.SUCCESS,
         payload: { user: data.user, message: data.message },
       });
-      navigate("/chat");
+      navigate("/chat",{replace:true});
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
       dispatch({

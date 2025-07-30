@@ -41,7 +41,7 @@ const Login = () => {
         payload: { user: data.user, message: data.message },
       });
 
-      navigate("/chat");
+      navigate("/chat",{replace:true});
 
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
