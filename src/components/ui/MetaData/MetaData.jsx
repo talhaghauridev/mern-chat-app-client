@@ -5,7 +5,12 @@ const MetaData = ({ title, description }) => {
     <>
       <Helmet>
         <title>{title}</title>
-        {description && <meta name="description" content={description} />}
+        {description && (
+          <meta
+            name="description"
+            content={description}
+          />
+        )}
       </Helmet>
     </>
   );

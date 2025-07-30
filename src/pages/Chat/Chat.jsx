@@ -9,9 +9,9 @@ const Chat = () => {
   return (
     <>
       <MetaData
-          title={"Chat - Chat App"}
-          description={"Join the chat room and message friends in real time"}
-        />
+        title={"Chat - Chat App"}
+        description={"Join the chat room and message friends in real time"}
+      />
 
       <section
         id="chat"

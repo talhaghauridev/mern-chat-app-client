@@ -98,12 +98,10 @@ const MyChats = () => {
                                 chat.isGroupChat
                                   ? latest.sender.name
                                   : latest.sender._id === loggedUser.user._id
-                                  ? "You"
-                                  : latest.sender.name
+                                    ? "You"
+                                    : latest.sender.name
                               }
-
                               key={latest?.chat?._id}
-                              
                               message={latest?.content}
                             />
                           )

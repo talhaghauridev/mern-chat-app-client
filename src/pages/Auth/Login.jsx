@@ -17,7 +17,7 @@ const initialValues = {
 };
 
 const Login = () => {
-  const [state, dispatch] = useReducer(loginReducer, initialLoginState); 
+  const [state, dispatch] = useReducer(loginReducer, initialLoginState);
   const navigate = useNavigate();
   const { error, message, loading } = state;
 
@@ -41,8 +41,7 @@ const Login = () => {
         payload: { user: data.user, message: data.message },
       });
 
-      navigate("/chat",{replace:true});
-
+      navigate("/chat", { replace: true });
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
       dispatch({
@@ -60,13 +59,13 @@ const Login = () => {
 
   const { handleSubmit, getFieldProps } = formik;
   useMessage(null, message, "/chat");
-console.log({loading})
+  console.log({ loading });
   return (
     <>
       <MetaData
-          title={"Login - Chat App"}
-          description={"Login to Chat App and start messaging in real time"}
-        />
+        title={"Login - Chat App"}
+        description={"Login to Chat App and start messaging in real time"}
+      />
       <section
         id="login"
         className="relative overflow-hidden w-[100%]  flex flex-col gap-[20px] items-center justify-center h-[100vh] p-[15px]">

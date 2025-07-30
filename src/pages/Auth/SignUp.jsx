@@ -21,7 +21,7 @@ const SignUp = () => {
   const [state, dispatch] = useReducer(signupReducer, initialSignupState);
   const { error, message, loading } = state;
   const [avatar, setAvatar] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   //Handle Avatar
   const handleAvatar = (e) => {
     const reader = new FileReader();
@@ -52,7 +52,7 @@ const SignUp = () => {
         type: SIGNUP.SUCCESS,
         payload: { user: data.user, message: data.message },
       });
-      navigate("/chat",{replace:true});
+      navigate("/chat", { replace: true });
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
       dispatch({

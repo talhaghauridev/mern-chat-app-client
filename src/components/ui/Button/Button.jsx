@@ -2,14 +2,14 @@ import { memo } from "react";
 import { Link } from "react-router-dom";
 import cn from "@/utils/cn";
 
-const Button = ({ 
-  type = "button", 
-  label, 
-  className = "", 
-  to, 
-  disabled = false, 
+const Button = ({
+  type = "button",
+  label,
+  className = "",
+  to,
+  disabled = false,
   loading = false,
-  onClick 
+  onClick,
 }) => {
   const buttonClasses = cn(
     "flex items-center justify-center w-full max-w-full bg-[#3b5998] rounded-lg text-base font-Work text-white p-3 py-2 transition-all duration-200",
@@ -34,7 +34,9 @@ const Button = ({
 
   if (to) {
     return (
-      <Link to={to} className={buttonClasses}>
+      <Link
+        to={to}
+        className={buttonClasses}>
         {content}
       </Link>
     );
@@ -45,8 +47,7 @@ const Button = ({
       type={type}
       disabled={disabled || loading}
       onClick={onClick}
-      className={buttonClasses}
-    >
+      className={buttonClasses}>
       {content}
     </button>
   );
