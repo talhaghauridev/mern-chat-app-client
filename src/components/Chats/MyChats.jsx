@@ -94,8 +94,16 @@ const MyChats = () => {
                         (latest) =>
                           latest?.chat?._id === chat?._id && (
                             <LatestMessageBox
+                              name={
+                                chat.isGroupChat
+                                  ? latest.sender.name
+                                  : latest.sender._id === loggedUser.user._id
+                                  ? "You"
+                                  : latest.sender.name
+                              }
+
                               key={latest?.chat?._id}
-                              name={latest?.sender?.name}
+                              
                               message={latest?.content}
                             />
                           )

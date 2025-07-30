@@ -25,7 +25,7 @@ const UpdateGroupChatModal = ({ handleFetchMessages }) => {
   const { user, token } = JSON.parse(localStorage.getItem(USER_INFO_KEY));
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { selectedChat, setSelectedChat, fetchAgain, setFetchAgain } = ChatState();
-  const [groupChatName, setGroupChatName] = useState();
+  const [groupChatName, setGroupChatName] = useState(selectedChat?.chatName);
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);

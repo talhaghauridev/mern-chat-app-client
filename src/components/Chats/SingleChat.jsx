@@ -47,6 +47,7 @@ const SingleChat = () => {
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(true);
   const messagesRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
   // Handle Fetch Messages
   const handleFetchMessages = async () => {
     if (!selectedChat) return;
@@ -87,35 +88,44 @@ const SingleChat = () => {
 
   // Handle Typing
   const handleTyping = (e) => {
-    setNewMessage(e.target.value);
+    const value = e.target.value;
+    setNewMessage(value);
 
     if (!socketConnection) return;
+
+    // clear previous typing timeout
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+
+    if (value.trim() === "") {
+      // input cleared: stop typing
+      if (typing) {
+        socket.emit("stop_typing", selectedChat._id);
+        setTyping(false);
+      }
+      return;
+    }
 
     if (!typing) {
       setTyping(true);
       socket.emit("typing", selectedChat._id);
     }
-    let lastTypingTime = new Date().getTime();
-    var timerLength = 3000;
-    setTimeout(() => {
-      var timeNow = new Date().getTime();
-      var timeDiff = timeNow - lastTypingTime;
-      if (timeDiff >= timerLength && typing) {
-        socket.emit("stop_typing", selectedChat._id);
-        setTyping(false);
-      }
-    }, timerLength);
+
+    // debounce stop typing after inactivity
+    typingTimeoutRef.current = setTimeout(() => {
+      socket.emit("stop_typing", selectedChat._id);
+      setTyping(false);
+    }, 3000);
   };
 
   // Handle Scroll Bottom
   const handleScrollBottom = useCallback(() => {
-    if (messagesRef?.current) {
-      messagesRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
+    if (chatContainerRef?.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth',
       });
     }
-  }, [messagesRef]);
+  }, [chatContainerRef]);
 
   const handleScroll = useCallback(() => {
     const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
@@ -151,7 +161,7 @@ const SingleChat = () => {
   // Setup socket connection and event listeners
   useEffect(() => {
     socket.emit("setup", user?.user);
-    socket.on("connection", () => setSocketConnection(true));
+    socket.on("connected", () => setSocketConnection(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop_typing", () => setIsTyping(false));
   }, [socket, user]);
@@ -167,9 +177,18 @@ const SingleChat = () => {
     handleScrollBottom();
   }, [messages, handleScrollBottom]);
 
+  // Auto-scroll when typing indicator appears
+  useEffect(() => {
+    if (isTyping) {
+      handleScrollBottom();
+    }
+  }, [isTyping, handleScrollBottom]);
+
   // Handle incoming messages
   useEffect(() => {
     socket.on("message_recieved", (newMessageReceived) => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+      setIsTyping(false);
       if (!selectedChatCompare || selectedChatCompare?._id !== newMessageReceived?.chat?._id) {
         if (!notification?.includes(newMessageReceived)) {
           setNotification([newMessageReceived, ...notification]);
@@ -254,22 +273,31 @@ const SingleChat = () => {
                 ) : (
                   <div className="flex flex-col items-center justify-between w-[100%] h-[100%]">
                     <Messages messages={messages} />
+                      {isTyping && (
+                        <div className="flex items-center ml-4 mt-2 py-4 space-x-2">
+                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                        </div>
+                      )}
+           
+
                   </div>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="absolute w-full  items-center justify-center flex bottom-[85px]">
+          <div className="absolute w-full  items-center justify-center  bottom-[85px] hidden">
             <div
               className={cn(
-                "sticky flex items-center justify-center transition-all",
+                "sticky flex items-center justify-center transition-all" ,
                 !isScrolledToBottom && !loading
                   ? "bottom-[85px] opacity-1  "
                   : "bottom-0 opacity-0 "
               )}>
               <button
-                className=" text-[26px] rounded-full backdrop-grayscale bg-white p-[6px] flex items-start justify-center"
+                className=" text-[26px] rounded-full backdrop-grayscale bg-white p-[6px]  items-start justify-center"
                 onClick={handleScrollBottom}>
                 <ArrowDownIcon />
               </button>
